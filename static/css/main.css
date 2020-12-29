@@ -1,0 +1,255 @@
+@import 'normalize.css';
+* {
+  box-sizing: border-box;
+  font-family: "Alegreya Sans", sans-serif;
+}
+
+body {
+  background-color: #F2F2F2;
+}
+
+.Accordion-group {
+  margin: 5% auto 0 auto;
+  max-width: 800px;
+  border-radius: 5px;
+  padding: 5%;
+}
+
+.Accordion {
+  padding: 0;
+  border: 1px solid #D5D5D5;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.Accordion h3 {
+  margin: 0;
+  padding: 0;
+  border-radius: 5px;
+}
+
+.Accordion.focus {
+  width: 100%;
+  box-shadow: 3px 3px 3px 3px darkgray;
+  position: relative;
+  z-index: 1;
+  transform: scale(1.01);
+}
+
+.Accordion-trigger {
+  background: none;
+  color: #212121;
+  display: block;
+  font-size: 1rem;
+  font-weight: normal;
+  padding: 0.5em 1em;
+  position: relative;
+  text-align: left;
+  width: 100%;
+  outline: none;
+}
+
+.Accordion-trigger:focus,
+.Accordion-trigger:hover {
+  background: white;
+}
+
+.Accordion-trigger:focus {
+  outline: 4px solid transparent;
+}
+
+.Accordion *:first-child .Accordion-trigger {
+  border-radius: 5px 5px 0 0;
+}
+
+button {
+  border-style: none;
+}
+
+.Accordion button::-moz-focus-inner {
+  border: 0;
+}
+
+.Accordion-title {
+  pointer-events: none;
+  border: transparent 2px solid;
+  border-radius: 5px;
+  padding: 0.25em 0;
+  outline: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.Accordion-trigger:focus .Accordion-title {
+  border-color: #0759d5;
+}
+
+.Accordion-trigger[aria-expanded=false] {
+  background-color: #F9F9F9;
+}
+.Accordion-trigger[aria-expanded=false] .available-funds {
+  display: block;
+}
+.Accordion-trigger[aria-expanded=false] .menu-icon {
+  display: none;
+}
+
+.Accordion-trigger[aria-expanded=true] .available-funds {
+  display: none;
+}
+.Accordion-trigger[aria-expanded=true] .menu-icon {
+  display: flex;
+}
+
+.Accordion-trigger:focus,
+.Accordion-trigger:hover {
+  background: #e1edfe;
+}
+
+.Accordion-panel {
+  margin: 0;
+  padding: 0 1em 1em 1em;
+}
+
+.Accordion-panel[hidden] {
+  display: none;
+}
+
+.details {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.bank-name {
+  background-color: #E5E5E5;
+  padding: 2px 5px;
+  display: inline-block;
+  font-size: 0.6em;
+}
+
+.small {
+  font-size: 0.8em;
+  color: #636568;
+  font-family: "Alegreya Sans", sans-serif;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+button:not(.Accordion-trigger) {
+  padding: 10px 20px;
+  width: 45%;
+  margin-top: 0.5em;
+  border: 1px solid #D5D5D5;
+  border-radius: 5px;
+  background: none;
+}
+
+button:nth-of-type(1):not(.Accordion-trigger) {
+  display: none;
+}
+
+button:not(.Accordion-trigger):not(button:nth-of-type(3)):hover {
+  background: #E5E5E5;
+}
+
+button:nth-of-type(3) {
+  background-color: #003574;
+  color: white;
+}
+
+.available-funds,
+.balance-section {
+  width: auto;
+  display: inline-block;
+}
+
+.balance-section {
+  border-right: 1px solid darkgray;
+  display: none;
+}
+
+.available-funds {
+  padding: 0.25em 0;
+  margin-left: 1em;
+}
+
+.balance {
+  display: block;
+}
+
+.amount {
+  float: right;
+  margin-left: 1em;
+  font-family: "Frank Ruhl Libre", sans-serif;
+}
+
+.account-number {
+  font-family: "Frank Ruhl Libre", sans-serif;
+}
+
+.currency {
+  font-family: "Alegreya Sans", sans-serif;
+}
+
+.funds-title {
+  text-align: right;
+}
+
+.account-balance {
+  font-size: 1.5em;
+  font-family: "Frank Ruhl Libre", sans-serif;
+}
+
+.account-balance > span:nth-child(1) {
+  font-size: 0.5em;
+}
+
+.account-title {
+  padding: 0.3em 0;
+}
+
+.menu-icon {
+  width: 20px;
+  display: flex;
+  height: 20px;
+  background-color: #F2F2F2;
+  border-radius: 50%;
+  align-items: center;
+  position: absolute;
+  top: 1em;
+  right: 1.2em;
+}
+
+.menu-icon > svg {
+  height: 60%;
+  fill: #636568;
+}
+
+@media only screen and (min-width: 450px) {
+  button:not(.Accordion-trigger) {
+    width: 30%;
+  }
+
+  button:nth-of-type(1):not(.Accordion-trigger) {
+    display: block;
+  }
+
+  .balance-section {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    flex-direction: column;
+    justify-content: space-around;
+    padding-right: 1em;
+  }
+}
+
+/*# sourceMappingURL=main.css.map */

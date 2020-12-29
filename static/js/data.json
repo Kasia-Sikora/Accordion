@@ -1,0 +1,41 @@
+  {
+    "user": {
+      "id": 1,
+      "accounts": [
+        {
+          "id": 1,
+          "bankName": "PKO Bank Polski",
+          "accountName": "Konto na Zero",
+          "accountNumber": "64 9387 1026 8543 1703 5827 9630",
+          "balance": -12.30,
+          "locks": 12262.59,
+          "availableFunds": 1035.29,
+          "specialHolder": null
+        },
+        {
+          "id": 2,
+          "bankName": "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+          "accountName": "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+          "accountNumber": "64 9387 1026 8543 1703 5827 9631",
+          "balance": 999.99,
+          "locks": -999999999.99,
+          "availableFunds": 999999999.99,
+          "specialHolder": {
+            "title": "w tym limit odnawialny",
+            "amount": 999999999.99
+          }
+        },
+        {
+          "id": 3,
+          "bankName": "PKO Bank Polski",
+          "accountName": "Konto na Zero",
+          "accountNumber": "64 9387 1026 8543 1703 5827 9632",
+          "balance": 999.99,
+          "locks": -999999999.99,
+          "availableFunds": -999999999.99,
+          "specialHolder": null
+        }
+      ]
+    }
+  }
+
