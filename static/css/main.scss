@@ -30,12 +30,22 @@ body {
 }
 
 .Accordion.focus {
+  //border-color: hsl(216, 94%, 43%);
   width: 100%;
-  box-shadow: 3px 3px 3px 3px darkgray;
+  box-shadow: 3px 3px 3px 3px #DCDCDC;
   position: relative;
   z-index: 1;
   transform: scale(1.01);
 }
+
+.Accordion-group.focus {
+  //border: 1px solid hsl(216, 94%, 43%);
+  //width: 100%;
+}
+
+//.Accordion.focus h3 {
+//  background-color: hsl(0, 0%, 97%);
+//}
 
 .Accordion-trigger {
   background: none;
@@ -48,6 +58,8 @@ body {
   text-align: left;
   width: 100%;
   outline: none;
+  //overflow: hidden;
+  //white-space: nowrap;
 }
 
 .Accordion-trigger:focus,
@@ -81,16 +93,23 @@ button {
   align-items: flex-start;
   justify-content: space-between;
   flex-grow: 1;
+  //overflow: hidden;
+  //white-space: nowrap;
 }
 
 .Accordion-trigger:focus .Accordion-title {
   border-color: hsl(216, 94%, 43%);
 }
 
+.Accordion-trigger[aria-expanded="true"] .Accordion-icon {
+  transform: translateY(-50%) rotate(-135deg);
+}
 
 .Accordion-trigger[aria-expanded="false"] {
   background-color: #F9F9F9;
-
+  //.available-funds{
+  //  font-size: 1em;
+  //}
   .available-funds{
     display: block;
   }
@@ -120,6 +139,7 @@ button {
   padding: 0 1em 1em 1em;
 }
 
+/* For Edge bug https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/4806035/ */
 .Accordion-panel[hidden] {
   display: none;
 }
@@ -137,6 +157,9 @@ button {
   padding: 2px 5px;
   display: inline-block;
   font-size: 0.6em;
+  text-overflow:ellipsis;
+  max-width: 90%;
+  overflow: hidden;
 }
 
 .small {
@@ -172,11 +195,11 @@ button:nth-of-type(3) {
   color: white;
 }
 
-.available-funds,
-.balance-section {
-  width: auto;
-  display: inline-block;
-}
+//.available-funds,
+//.balance-section {
+//  width: auto;
+//  display: inline-block;
+//}
 
 .balance-section {
   border-right: 1px solid darkgray;
@@ -192,14 +215,18 @@ button:nth-of-type(3) {
   display: block;
 }
 
+
 .amount {
   float: right;
   margin-left: 1em;
   font-family: 'Frank Ruhl Libre', sans-serif;
 }
-
 .account-number{
   font-family: 'Frank Ruhl Libre', sans-serif;
+}
+
+.account-details{
+  max-width: 60%;
 }
 
 .currency{
@@ -211,7 +238,7 @@ button:nth-of-type(3) {
 }
 
 .account-balance {
-  font-size: 1.5em;
+  //font-size: 1.5em;
   font-family: 'Frank Ruhl Libre', sans-serif;
 }
 
@@ -221,6 +248,8 @@ button:nth-of-type(3) {
 
 .account-title {
   padding: 0.3em 0;
+  text-overflow:ellipsis;
+  overflow: hidden;
 }
 
 .menu-icon {
@@ -252,7 +281,7 @@ button:nth-of-type(3) {
   .balance-section {
     display: flex;
     flex-wrap: wrap;
-    align-items: stretch;
+    //align-items: stretch;
     flex-direction: column;
     justify-content: space-around;
     padding-right: 1em;

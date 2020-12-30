@@ -30,7 +30,7 @@ body {
 
 .Accordion.focus {
   width: 100%;
-  box-shadow: 3px 3px 3px 3px darkgray;
+  box-shadow: 3px 3px 3px 3px #DCDCDC;
   position: relative;
   z-index: 1;
   transform: scale(1.01);
@@ -86,6 +86,10 @@ button {
   border-color: #0759d5;
 }
 
+.Accordion-trigger[aria-expanded=true] .Accordion-icon {
+  transform: translateY(-50%) rotate(-135deg);
+}
+
 .Accordion-trigger[aria-expanded=false] {
   background-color: #F9F9F9;
 }
@@ -113,6 +117,7 @@ button {
   padding: 0 1em 1em 1em;
 }
 
+/* For Edge bug https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/4806035/ */
 .Accordion-panel[hidden] {
   display: none;
 }
@@ -130,6 +135,9 @@ button {
   padding: 2px 5px;
   display: inline-block;
   font-size: 0.6em;
+  text-overflow: ellipsis;
+  max-width: 90%;
+  overflow: hidden;
 }
 
 .small {
@@ -165,12 +173,6 @@ button:nth-of-type(3) {
   color: white;
 }
 
-.available-funds,
-.balance-section {
-  width: auto;
-  display: inline-block;
-}
-
 .balance-section {
   border-right: 1px solid darkgray;
   display: none;
@@ -195,6 +197,10 @@ button:nth-of-type(3) {
   font-family: "Frank Ruhl Libre", sans-serif;
 }
 
+.account-details {
+  max-width: 60%;
+}
+
 .currency {
   font-family: "Alegreya Sans", sans-serif;
 }
@@ -204,7 +210,6 @@ button:nth-of-type(3) {
 }
 
 .account-balance {
-  font-size: 1.5em;
   font-family: "Frank Ruhl Libre", sans-serif;
 }
 
@@ -214,6 +219,8 @@ button:nth-of-type(3) {
 
 .account-title {
   padding: 0.3em 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .menu-icon {
@@ -245,7 +252,6 @@ button:nth-of-type(3) {
   .balance-section {
     display: flex;
     flex-wrap: wrap;
-    align-items: stretch;
     flex-direction: column;
     justify-content: space-around;
     padding-right: 1em;
