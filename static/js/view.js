@@ -1,26 +1,21 @@
-//TODO divide to view and controller classes
-
 export class View {
 
-    constructor() {
-        this.accordinGroup = document.getElementById('accordionGroup');
+    constructor(logic) {
         this.count = 1;
-        this.svg = document.getElementById('alphasvg');
+        this.svg = document.getElementById('menuButton');
         this.svg.style.display = 'none';
+        this.logic = logic;
     }
 
     displayCards = (data) => {
         data.user.accounts.forEach(account => this.displayAccordion(account));
-        console.log(data)
-        this.addListeners();
-        this.setFocus();
+        this.logic.init();
     }
 
-    createButton = (data) => {
+    createAccordionTrigger = (data) => {
         const button = document.createElement('button');
         button.setAttribute('type', 'button');
         button.setAttribute('aria-expanded', 'false');
-        button.setAttribute('aria-disabled', 'false');
         button.setAttribute('class', 'Accordion-trigger');
         button.setAttribute('aria-controls', `section${this.count}`);
         button.setAttribute('id', `accordion${this.count}`);
@@ -34,15 +29,16 @@ export class View {
     }
 
     displayAccordion = (data) => {
+        const accordionGroup = document.getElementById('accordionGroup');
         const accordion = document.createElement('div');
         accordion.setAttribute('class', 'Accordion');
         const h3 = document.createElement('h3');
-        const button = this.createButton(data);
-        const section = this.createSection(data, this.count)
-        h3.appendChild(button);
+        const accordionTrigger = this.createAccordionTrigger(data);
+        const accordionPanel = this.createAccordionPanel(data, this.count)
+        h3.appendChild(accordionTrigger);
         accordion.appendChild(h3)
-        accordion.appendChild(section);
-        this.accordinGroup.appendChild(accordion)
+        accordion.appendChild(accordionPanel);
+        accordionGroup.appendChild(accordion)
         this.count++;
     }
 
@@ -76,21 +72,13 @@ export class View {
         const menuIcon = document.createElement('span');
         menuIcon.setAttribute('class', 'menu-icon');
         const svg = this.svg.cloneNode(true);
-        svg.style.display = 'block'
+        svg.style.visibility = 'visible';
+        svg.style.display = 'block';
         menuIcon.appendChild(svg);
         return menuIcon;
     }
 
-    setFocus = (event) => {
-        const listOfAccordions = document.querySelectorAll('.Accordion');
-        if (event === undefined || event.type === 'click') {
-            this.clickHandler(event, listOfAccordions)
-        } else {
-            this.keyHandler(event, listOfAccordions)
-        }
-    }
-
-    createSection(data, count) {
+    createAccordionPanel(data, count) {
         const section = document.createElement('div');
         section.setAttribute('id', `section${count}`)
         section.setAttribute('role', 'region')
@@ -123,7 +111,7 @@ export class View {
         return details;
     }
 
-    createDetailButtons() {
+    createDetailButtons = () => {
         const buttonsContainer = document.createElement('div');
         buttonsContainer.setAttribute('class', 'buttons');
         const buttons = ['Szczegóły', 'Historia', 'Przelew'];
@@ -135,80 +123,19 @@ export class View {
         return buttonsContainer;
     }
 
-    addListeners() {
-        const listOfAccordions = document.querySelectorAll('.Accordion');
-        listOfAccordions.forEach(accordion => {
-            accordion.addEventListener('click', this.setFocus);
-            accordion.addEventListener('keydown', this.setFocus)
-        })
-    }
-
-    //TODO Divide function
-    clickHandler(event, listOfAccordions) {
-        listOfAccordions.forEach(accordion => {
-            if (accordion === (event === undefined ? listOfAccordions[0] : event.currentTarget)) {
-                accordion.firstElementChild.firstElementChild.setAttribute('aria-expanded', 'true');
-                accordion.firstElementChild.firstElementChild.setAttribute('aria-disabled', 'true');
-                accordion.classList.add('focus');
-                accordion.children[1].style.display = 'block';
-            } else {
-                accordion.firstElementChild.firstElementChild.setAttribute('aria-expanded', 'false');
-                accordion.firstElementChild.firstElementChild.setAttribute('aria-disabled', 'false');
-                accordion.children[1].style.display = 'none';
-                if (accordion.classList.contains('focus')) {
-                    accordion.classList.remove('focus')
-                }
-            }
-        })
-    }
-
-
-    //TODO change logic
-    keyHandler(event, listOfAccordions) {
-        if (event.key === 'Home') {
-            listOfAccordions[0].firstElementChild.firstElementChild.focus();
-        } else if (event.key === 'End') {
-            listOfAccordions[listOfAccordions.length - 1].firstElementChild.firstElementChild.focus();
-        } else if (event.key === 'ArrowUp') {
-            const newArray = Array.from(listOfAccordions)
-            const currentAccordion = newArray.filter(accordion => accordion.firstElementChild.firstElementChild === document.activeElement);
-            if (currentAccordion[0] === listOfAccordions[0]) {
-                listOfAccordions[listOfAccordions.length - 1].firstElementChild.firstElementChild.focus();
-            } else if (currentAccordion[0] === listOfAccordions[1]) {
-                listOfAccordions[0].firstElementChild.firstElementChild.focus();
-            } else if (currentAccordion[0] === listOfAccordions[2]) {
-                listOfAccordions[1].firstElementChild.firstElementChild.focus();
-            }
-        } else if (event.key === 'ArrowDown') {
-            const newArray = Array.from(listOfAccordions)
-            const currentAccordion = newArray.filter(accordion => accordion.firstElementChild.firstElementChild === document.activeElement);
-            if (currentAccordion[0] === listOfAccordions[0]) {
-                listOfAccordions[1].firstElementChild.firstElementChild.focus();
-            } else if (currentAccordion[0] === listOfAccordions[1]) {
-                listOfAccordions[2].firstElementChild.firstElementChild.focus();
-            } else if (currentAccordion[0] === listOfAccordions[2]) {
-                listOfAccordions[0].firstElementChild.firstElementChild.focus();
-            }
-        }
-    }
-
-    //TODO change function name
-    createCurrency = () => {
+    createCurrencySpan = () => {
         const span = document.createElement('span');
         span.setAttribute('class', 'currency');
         span.textContent = " PLN";
         return span;
     }
 
-    //TODO change function name
     createAmountSpan = (data) => {
         const span = document.createElement('span');
         span.setAttribute('class', "amount");
-        if (data < 0) {
-            span.style.color = '#CB2C1D';
-        }
-        span.textContent = this.convertCash(data);
-        span.appendChild(this.createCurrency())
+        if (data < 0) span.style.color = '#CB2C1D';
+        span.textContent = this.logic.convertCash(data);
+        span.appendChild(this.createCurrencySpan())
         return span;
     }
 
@@ -220,49 +147,21 @@ export class View {
         foundsTitle.textContent = 'Dostępne środki';
         const accountBalance = document.createElement('div');
         accountBalance.setAttribute('class', 'account-balance');
-        if (data.availableFunds < 0) {
-            accountBalance.style.color = '#CB2C1D'
-        }
-        accountBalance.textContent = this.convertCash(data.availableFunds);
+        if (data.availableFunds < 0) accountBalance.style.color = '#CB2C1D';
+        accountBalance.textContent = this.logic.convertCash(data.availableFunds);
         availableFounds.appendChild(foundsTitle);
-        if(data.specialHolder !== null){
-            const specialHolder = document.createElement('div');
-            specialHolder.setAttribute('class', 'special-holder small');
-            specialHolder.textContent = `${data.specialHolder.title}: ${this.convertCash(data.specialHolder.amount)}`;
-            specialHolder.appendChild(this.createCurrency());
-            availableFounds.appendChild(specialHolder);
-        }
+        if(data.specialHolder !== null) availableFounds.appendChild(this.createSpecialHolder(data));
         availableFounds.appendChild(accountBalance);
-        accountBalance.appendChild(this.createCurrency());
+        accountBalance.appendChild(this.createCurrencySpan());
         return availableFounds;
     }
 
-    //TODO Refactor
-    convertCash(data) {
-        let amount = [];
-        let data2 = (Math.abs(data).toFixed(2)).toString();
-        let count = 0;
-        for (let i = data2.length - 1; i >= 0; i--) {
-            if (data2[i] === ".") {
-                amount.unshift(',');
-            } else if (i < data2.length - 2) {
-                count = count === 3? 0 : count;
-                count++;
-                if (count % 3 === 0) {
-                    amount.unshift(data2[i])
-                    amount.unshift(' ')
-                } else {
-                    amount.unshift(data2[i])
-                }
-
-            } else {
-                amount.unshift(data2[i])
-            }
-        }
-        if(data < 0){
-            amount.unshift('-')
-        }
-        return amount.join('');
+    createSpecialHolder = (data) => {
+        const specialHolder = document.createElement('div');
+        specialHolder.setAttribute('class', 'special-holder small');
+        specialHolder.textContent = `${data.specialHolder.title}: ${this.logic.convertCash(data.specialHolder.amount)}`;
+        specialHolder.appendChild(this.createCurrencySpan());
+        return specialHolder;
     }
 }
 

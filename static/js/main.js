@@ -1,8 +1,10 @@
 import {fetchData} from "./dataHandler.js";
 import {View} from "./view.js";
+import {Logic} from "./logic.js";
 
 const start = () => {
-    let view = new View();
+    const logic = new Logic();
+    const view = new View(logic);
     fetchData(view.displayCards);
 }
 
