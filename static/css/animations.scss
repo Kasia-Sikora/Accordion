@@ -1,0 +1,27 @@
+@keyframes onTop {
+  from {
+    max-height: 120px;
+    z-index: 0;
+    transform: scale(1);
+    background-color: #F9F9F9;
+    box-shadow: none;
+  }
+  to {
+    z-index: 2;
+    transform: scale(1.02);
+    background-color: white;
+    box-shadow: 3px 3px 3px 3px #DCDCDC;
+    max-height: 900px;
+  }
+}
+
+@keyframes onShow {
+  from {
+    transform: translateY(-60px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

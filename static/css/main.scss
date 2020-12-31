@@ -1,40 +1,60 @@
 @import 'normalize.css';
+@import 'animations.css';
+
+$textFont: 'Alegreya Sans', sans-serif;
+$numberFont: 'Frank Ruhl Libre', sans-serif;
+$basicBorderRadius: 5px;
 
 * {
   box-sizing: border-box;
-  font-family: 'Alegreya Sans', sans-serif;
+  font-family: $textFont;
 }
 
 body {
   background-color: #F2F2F2;
+  font-size: 14px;
 }
 
 .Accordion-group {
-  margin: 5% auto 0 auto;
-  max-width: 800px;
-  border-radius: 5px;
-  padding: 5%;
+  border-radius: $basicBorderRadius;
+  padding: 0 5%;
+  margin-top: 5%;
 }
 
 .Accordion {
   padding: 0;
   border: 1px solid #D5D5D5;
-  border-radius: 5px;
   background-color: white;
+  max-width: 590px;
+  margin: 0 auto;
+
+  h3 {
+    margin: 0;
+    padding: 0;
+  }
 }
 
-.Accordion h3 {
-  margin: 0;
-  padding: 0;
-  border-radius: 5px;
+.Accordion:first-child {
+  border-radius: 5px 5px 0 0;
+}
+
+.Accordion:last-child {
+  border-radius: 0 0 5px 5px;
 }
 
 .Accordion.focus {
   width: 100%;
-  box-shadow: 3px 3px 3px 3px darkgray;
   position: relative;
-  z-index: 1;
-  transform: scale(1.01);
+  animation: onTop 0.5s ease-in-out;
+  z-index: 2;
+  transform: scale(1.02);
+  background-color: white;
+  box-shadow: 3px 3px 3px 3px #DCDCDC;
+  border-radius: $basicBorderRadius;
+
+  .Accordion-panel {
+    animation: onShow 0.3s ease-in-out;
+  }
 }
 
 .Accordion-trigger {
@@ -42,70 +62,76 @@ body {
   color: hsl(0, 0%, 13%);
   display: block;
   font-size: 1rem;
-  font-weight: normal;
-  padding: 0.5em 1em;
+  padding: 1em;
   position: relative;
   text-align: left;
   width: 100%;
-  outline: none;
-}
-
-.Accordion-trigger:focus,
-.Accordion-trigger:hover {
-  background: white;
-}
-
-.Accordion-trigger:focus {
-  outline: 4px solid transparent;
-}
-
-.Accordion *:first-child .Accordion-trigger {
-  border-radius: 5px 5px 0 0;
-}
-
-button {
   border-style: none;
+  z-index: 1;
+
+  .bank-name {
+    background-color: #E5E5E5;
+    padding: 2px 5px;
+    display: inline-block;
+    font-size: 0.85em;
+    text-overflow: ellipsis;
+    max-width: 90%;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .menu-icon {
+    width: 25px;
+    display: flex;
+    height: 25px;
+    background-color: #F2F2F2;
+    border-radius: 50%;
+    align-items: center;
+    position: absolute;
+    top: 1em;
+    right: 1.2em;
+
+    svg {
+      height: 60%;
+      fill: #636568;
+    }
+  }
 }
 
-.Accordion button::-moz-focus-inner {
-  border: 0;
+.Accordion:last-child > h3 > .Accordion-trigger {
+  border-radius: 0 0 5px 5px;
 }
 
-.Accordion-title {
-  pointer-events: none;
-  border: transparent 2px solid;
-  border-radius: 5px;
-  padding: 0.25em 0;
-  outline: none;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  flex-grow: 1;
-}
-
-.Accordion-trigger:focus .Accordion-title {
-  border-color: hsl(216, 94%, 43%);
+.Accordion.focus > h3 > .Accordion-trigger,
+.Accordion:first-child > h3 > .Accordion-trigger{
+  border-radius: 5px 5px 0 0;
 }
 
 
 .Accordion-trigger[aria-expanded="false"] {
   background-color: #F9F9F9;
 
-  .available-funds{
+  .available-funds {
     display: block;
+    white-space: nowrap;
+
+    .special-holder {
+      display: none;
+    }
   }
 
-  .menu-icon{
+  .menu-icon {
     display: none;
   }
 }
 
 .Accordion-trigger[aria-expanded="true"] {
-  .available-funds{
+
+  .available-funds {
     display: none;
   }
 
-  .menu-icon{
+  .menu-icon {
     display: flex;
   }
 }
@@ -115,147 +141,151 @@ button {
   background: hsl(215, 94%, 94%);
 }
 
+.Accordion-title {
+  pointer-events: none;
+  border-radius: $basicBorderRadius;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  .account-details {
+    overflow: hidden;
+
+    .account-title {
+      padding: 0.3em 0;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      font-size: 1.3em;
+    }
+
+    .account-number {
+      font-family: $numberFont;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+}
+
 .Accordion-panel {
   margin: 0;
   padding: 0 1em 1em 1em;
-}
+  overflow: hidden;
 
-.Accordion-panel[hidden] {
-  display: none;
-}
 
-.details {
-  border: 0;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: flex-end;
-}
+  .details {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
 
-.bank-name {
-  background-color: #E5E5E5;
-  padding: 2px 5px;
-  display: inline-block;
-  font-size: 0.6em;
-}
+    .amount {
+      float: right;
+      margin-left: 1em;
+      font-family: $numberFont;
+      font-size: 1em;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
 
-.small {
-  font-size: 0.8em;
-  color: #636568;
-  font-family: 'Alegreya Sans', sans-serif;
+    .available-funds > .account-balance {
+      font-size: 2em;
+    }
+
+    .balance-section {
+      display: none;
+    }
+  }
 }
 
 .buttons {
+
   display: flex;
   justify-content: space-between;
+
+  button {
+    width: 45%;
+    margin-top: 0.5em;
+    border: 1px solid #D5D5D5;
+    border-radius: $basicBorderRadius;
+    background: none;
+    padding: 10px 0;
+
+    &:hover {
+      background: #e5e5e5;
+    }
+
+    &:nth-of-type(1) {
+      display: none;
+    }
+
+    &:nth-of-type(3) {
+      background-color: #003574;
+      color: white;
+
+      &:hover {
+        background-color: #002d65;
+      }
+    }
+  }
 }
 
-button:not(.Accordion-trigger) {
-  padding: 10px 20px;
-  width: 45%;
-  margin-top: 0.5em;
-  border: 1px solid #D5D5D5;
-  border-radius: 5px;
-  background: none;
-}
-
-button:nth-of-type(1):not(.Accordion-trigger) {
-  display: none;
-}
-
-button:not(.Accordion-trigger):not(button:nth-of-type(3)):hover {
-  background: #E5E5E5;
-}
-
-button:nth-of-type(3) {
-  background-color: #003574;
-  color: white;
-}
-
-.available-funds,
-.balance-section {
-  width: auto;
-  display: inline-block;
-}
-
-.balance-section {
-  border-right: 1px solid darkgray;
-  display: none;
+.small {
+  font-size: 0.85em;
+  color: #636568;
+  font-family: $textFont;
 }
 
 .available-funds {
-  padding: 0.25em 0;
   margin-left: 1em;
-}
-
-.balance{
-  display: block;
-}
-
-.amount {
-  float: right;
-  margin-left: 1em;
-  font-family: 'Frank Ruhl Libre', sans-serif;
-}
-
-.account-number{
-  font-family: 'Frank Ruhl Libre', sans-serif;
-}
-
-.currency{
-  font-family: 'Alegreya Sans', sans-serif;
-}
-
-.funds-title {
+  white-space: nowrap;
   text-align: right;
 }
 
+.currency {
+  font-family: $textFont;
+  font-size: 1em;
+}
+
 .account-balance {
-  font-size: 1.5em;
-  font-family: 'Frank Ruhl Libre', sans-serif;
+  font-family: $numberFont;
+  font-size: 1.3em;
+
+  span:nth-child(1) {
+    font-size: 0.8em;
+  }
 }
 
-.account-balance > span:nth-child(1) {
-  font-size: 0.5em;
-}
+@media only screen and (min-width: 400px) {
 
-.account-title {
-  padding: 0.3em 0;
-}
-
-.menu-icon {
-  width: 20px;
-  display: flex;
-  height: 20px;
-  background-color: #F2F2F2;
-  border-radius: 50%;
-  align-items: center;
-  position: absolute;
-  top: 1em;
-  right: 1.2em;
-}
-
-.menu-icon > svg {
-  height: 60%;
-  fill: #636568;
-}
-
-
-@media only screen and (min-width: 450px) {
-  button:not(.Accordion-trigger) {
-    width: 30%;
+  body {
+    font-size: 16px;
   }
 
-  button:nth-of-type(1):not(.Accordion-trigger) {
-    display: block;
+  .buttons {
+    button {
+      width: 31%;
+    }
+
+    button:nth-of-type(1) {
+      display: block;
+    }
   }
-  .balance-section {
+
+  .Accordion-panel > .details > .balance-section {
     display: flex;
     flex-wrap: wrap;
-    align-items: stretch;
     flex-direction: column;
     justify-content: space-around;
     padding-right: 1em;
-  }
+    overflow: hidden;
+    border-right: 1px solid darkgray;
 
+    .balance {
+      display: block;
+    }
+  }
 }
