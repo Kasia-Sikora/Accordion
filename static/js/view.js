@@ -11,6 +11,7 @@ export class View {
 
     displayCards = (data) => {
         data.user.accounts.forEach(account => this.displayAccordion(account));
+        console.log(data)
         this.addListeners();
         this.setFocus();
     }
@@ -63,7 +64,7 @@ export class View {
         const accountNumber = document.createElement('div');
         accountNumber.setAttribute('class', 'account-number small');
         accountNumber.textContent = data.accountNumber;
-        const availableFounds = this.createFoundsSection(data.availableFunds);
+        const availableFounds = this.createFoundsSection(data);
         accountDetails.appendChild(accountTitle)
         accountDetails.appendChild(accountNumber);
         accordionTitle.appendChild(accountDetails);
@@ -82,7 +83,6 @@ export class View {
 
     setFocus = (event) => {
         const listOfAccordions = document.querySelectorAll('.Accordion');
-        console.log(event)
         if (event === undefined || event.type === 'click') {
             this.clickHandler(event, listOfAccordions)
         } else {
@@ -113,7 +113,7 @@ export class View {
         lock.setAttribute('class', 'lock small');
         lock.textContent = 'Blokady';
 
-        const availableFounds = this.createFoundsSection(data.availableFunds);
+        const availableFounds = this.createFoundsSection(data);
         lock.appendChild(this.createAmountSpan(data.locks));
         balance.appendChild(this.createAmountSpan(data.balance));
         balanceSection.appendChild(balance);
@@ -123,20 +123,16 @@ export class View {
         return details;
     }
 
-    //TODO loop
     createDetailButtons() {
-        const buttons = document.createElement('div');
-        buttons.setAttribute('class', 'buttons');
-        const button1 = document.createElement('button');
-        button1.textContent = 'Szczegóły';
-        const button2 = document.createElement('button');
-        button2.textContent = 'Historia';
-        const button3 = document.createElement('button');
-        button3.textContent = 'Przelew';
-        buttons.appendChild(button1);
-        buttons.appendChild(button2);
-        buttons.appendChild(button3);
-        return buttons;
+        const buttonsContainer = document.createElement('div');
+        buttonsContainer.setAttribute('class', 'buttons');
+        const buttons = ['Szczegóły', 'Historia', 'Przelew'];
+        buttons.forEach(elem => {
+            let button = document.createElement('button');
+            button.textContent = elem;
+            buttonsContainer.appendChild(button);
+        })
+        return buttonsContainer;
     }
 
     addListeners() {
@@ -200,7 +196,7 @@ export class View {
     createCurrency = () => {
         const span = document.createElement('span');
         span.setAttribute('class', 'currency');
-        span.textContent = "PLN";
+        span.textContent = " PLN";
         return span;
     }
 
@@ -208,7 +204,10 @@ export class View {
     createAmountSpan = (data) => {
         const span = document.createElement('span');
         span.setAttribute('class', "amount");
-        span.textContent = data;
+        if (data < 0) {
+            span.style.color = '#CB2C1D';
+        }
+        span.textContent = this.convertCash(data);
         span.appendChild(this.createCurrency())
         return span;
     }
@@ -221,11 +220,49 @@ export class View {
         foundsTitle.textContent = 'Dostępne środki';
         const accountBalance = document.createElement('div');
         accountBalance.setAttribute('class', 'account-balance');
-        accountBalance.textContent = data;
+        if (data.availableFunds < 0) {
+            accountBalance.style.color = '#CB2C1D'
+        }
+        accountBalance.textContent = this.convertCash(data.availableFunds);
         availableFounds.appendChild(foundsTitle);
+        if(data.specialHolder !== null){
+            const specialHolder = document.createElement('div');
+            specialHolder.setAttribute('class', 'special-holder small');
+            specialHolder.textContent = `${data.specialHolder.title}: ${this.convertCash(data.specialHolder.amount)}`;
+            specialHolder.appendChild(this.createCurrency());
+            availableFounds.appendChild(specialHolder);
+        }
         availableFounds.appendChild(accountBalance);
         accountBalance.appendChild(this.createCurrency());
         return availableFounds;
+    }
+
+    //TODO Refactor
+    convertCash(data) {
+        let amount = [];
+        let data2 = (Math.abs(data).toFixed(2)).toString();
+        let count = 0;
+        for (let i = data2.length - 1; i >= 0; i--) {
+            if (data2[i] === ".") {
+                amount.unshift(',');
+            } else if (i < data2.length - 2) {
+                count = count === 3? 0 : count;
+                count++;
+                if (count % 3 === 0) {
+                    amount.unshift(data2[i])
+                    amount.unshift(' ')
+                } else {
+                    amount.unshift(data2[i])
+                }
+
+            } else {
+                amount.unshift(data2[i])
+            }
+        }
+        if(data < 0){
+            amount.unshift('-')
+        }
+        return amount.join('');
     }
 }
 
