@@ -1,6 +1,6 @@
-export class Logic {
+export default class Logic {
 
-    init = () =>  {
+    init = () => {
         this.addListeners();
         this.setFocus();
     }
@@ -51,10 +51,10 @@ export class Logic {
 
     expandPanel = (accordion, boolean) => {
         accordion.firstElementChild.firstElementChild.setAttribute('aria-expanded', boolean);
-        if(boolean) {
+        if (boolean) {
             accordion.classList.add('focus');
             accordion.children[1].style.display = 'block';
-        }else{
+        } else {
             accordion.children[1].style.display = 'none';
             if (accordion.classList.contains('focus')) {
                 accordion.classList.remove('focus')
@@ -62,37 +62,15 @@ export class Logic {
         }
     }
 
-    convertCash = (data) => {
-        let amount = [];
-        const money = (Math.abs(data).toFixed(2)).toString().replace('.', ',');
-
-        let count = 0;
-        for (let i = money.length - 1; i >= 0; i--) {
-            if (i < money.length - 3) {
-                count = (count === 3)? 0 : count;
-                count++;
-                if (count % 3 === 0) {
-                    amount.unshift(money[i]);
-                    amount.unshift(' ');
-                } else {
-                    amount.unshift(money[i]);
-                }
-            } else {
-                amount.unshift(money[i]);
-            }
-        }
-        if(data < 0) amount.unshift('-');
-        return amount.join('');
-    }
-
     changeFocus(listOfAccordions, currentAccordion, direction) {
         if (currentAccordion === listOfAccordions[0] && direction < 0) {
             listOfAccordions[listOfAccordions.length - 1].focus();
-        }else if(currentAccordion === listOfAccordions[listOfAccordions.length - 1] && direction > 0){
+        } else if (currentAccordion === listOfAccordions[listOfAccordions.length - 1] && direction > 0) {
             listOfAccordions[0].focus();
-        }else {
+        } else {
             const index = [...listOfAccordions].indexOf(currentAccordion);
             listOfAccordions[index + direction].focus();
         }
     }
 }
+

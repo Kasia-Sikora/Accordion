@@ -1,10 +1,8 @@
 import {fetchData} from "./dataHandler.js";
-import {View} from "./view.js";
-import {Logic} from "./logic.js";
+import View from "./view.js";
 
 const start = () => {
-    const logic = new Logic();
-    const view = new View(logic);
+    const view = new View();
     fetchData(view.displayCards);
 }
 

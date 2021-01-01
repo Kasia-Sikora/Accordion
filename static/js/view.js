@@ -1,10 +1,14 @@
-export class View {
+import Utils from "./utils.js";
+import Logic from "./logic.js";
 
-    constructor(logic) {
+export default class View {
+
+    constructor() {
         this.count = 1;
-        this.svg = document.getElementById('menuButton');
+        this.svg = document.querySelector('.menuButton');
         this.svg.style.display = 'none';
-        this.logic = logic;
+        this.logic = new Logic();
+        this.utils = new Utils();
     }
 
     displayCards = (data) => {
@@ -13,13 +17,17 @@ export class View {
     }
 
     createAccordionTrigger = (data) => {
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('aria-expanded', 'false');
-        button.setAttribute('class', 'Accordion-trigger');
-        button.setAttribute('aria-controls', `section${this.count}`);
-        button.setAttribute('id', `accordion${this.count}`);
-        const bankName = this.createBankName(data);
+        const button = this.utils.render(
+            'button',
+            {
+                'type': 'button',
+                'aria-expanded': 'false',
+                'class': 'Accordion-trigger',
+                'aria-controls': `section${this.count}`,
+                'id': `accordion${this.count}`
+            }
+        )
+        const bankName = this.utils.render('div', {'class': 'bank-name'}, data.bankName);
         const accordionTitle = this.createAccordionTitle(data);
         const menuIcon = this.createMenuIcon();
         button.appendChild(bankName);
@@ -30,11 +38,10 @@ export class View {
 
     displayAccordion = (data) => {
         const accordionGroup = document.getElementById('accordionGroup');
-        const accordion = document.createElement('div');
-        accordion.setAttribute('class', 'Accordion');
+        const accordion = this.utils.render('div', {'class': 'Accordion'})
         const h3 = document.createElement('h3');
         const accordionTrigger = this.createAccordionTrigger(data);
-        const accordionPanel = this.createAccordionPanel(data, this.count)
+        const accordionPanel = this.createAccordionPanel(data)
         h3.appendChild(accordionTrigger);
         accordion.appendChild(h3)
         accordion.appendChild(accordionPanel);
@@ -42,24 +49,11 @@ export class View {
         this.count++;
     }
 
-    createBankName = (data) => {
-        const bankName = document.createElement('div');
-        bankName.setAttribute('class', 'bank-name');
-        bankName.textContent = data.bankName;
-        return bankName;
-    }
-
     createAccordionTitle = (data) => {
-        const accordionTitle = document.createElement('div');
-        accordionTitle.setAttribute('class', 'Accordion-title');
-        const accountDetails = document.createElement('div');
-        accountDetails.setAttribute('class', 'account-details');
-        const accountTitle = document.createElement('div');
-        accountTitle.setAttribute('class', 'account-title');
-        accountTitle.textContent = data.accountName;
-        const accountNumber = document.createElement('div');
-        accountNumber.setAttribute('class', 'account-number small');
-        accountNumber.textContent = data.accountNumber;
+        const accordionTitle = this.utils.render('div', {'class': 'Accordion-title'})
+        const accountDetails = this.utils.render('div', {'class': 'account-details'})
+        const accountTitle = this.utils.render('div', {'class': 'account-title'}, data.accountName)
+        const accountNumber = this.utils.render('div', {'class': 'account-number small'}, data.accountNumber)
         const availableFounds = this.createFoundsSection(data);
         accountDetails.appendChild(accountTitle)
         accountDetails.appendChild(accountNumber);
@@ -69,8 +63,7 @@ export class View {
     }
 
     createMenuIcon = () => {
-        const menuIcon = document.createElement('span');
-        menuIcon.setAttribute('class', 'menu-icon');
+        const menuIcon = this.utils.render('span', {'class': 'menu-icon'})
         const svg = this.svg.cloneNode(true);
         svg.style.visibility = 'visible';
         svg.style.display = 'block';
@@ -78,29 +71,23 @@ export class View {
         return menuIcon;
     }
 
-    createAccordionPanel(data, count) {
-        const section = document.createElement('div');
-        section.setAttribute('id', `section${count}`)
-        section.setAttribute('role', 'region')
-        section.setAttribute('aria-labelledby', `accordion${count}`);
-        section.setAttribute('class', "Accordion-panel");
-        section.appendChild(this.createDetails(data, count))
+    createAccordionPanel(data) {
+        const section = this.utils.render('div', {
+            'id': `section${this.count}`,
+            'role': 'region',
+            'aria-labelledby': `accordion${this.count}`,
+            'class': 'Accordion-panel'
+        })
+        section.appendChild(this.createDetails(data))
         section.appendChild(this.createDetailButtons());
         return section;
     }
 
     createDetails = (data) => {
-        const details = document.createElement('div');
-        details.setAttribute('class', 'details');
-        const balanceSection = document.createElement('div');
-        balanceSection.setAttribute('class', 'balance-section');
-        const balance = document.createElement('div');
-        balance.setAttribute('class', 'balance small');
-        balance.textContent = 'Saldo';
-        const lock = document.createElement('div');
-        lock.setAttribute('class', 'lock small');
-        lock.textContent = 'Blokady';
-
+        const details = this.utils.render('div', {'class': 'details'})
+        const balanceSection = this.utils.render('div', {'class': 'balance-section'})
+        const balance = this.utils.render('div', {'class': 'balance small'}, 'Saldo');
+        const lock = this.utils.render('div', {'class': 'lock small'}, 'Blokady');
         const availableFounds = this.createFoundsSection(data);
         lock.appendChild(this.createAmountSpan(data.locks));
         balance.appendChild(this.createAmountSpan(data.balance));
@@ -112,55 +99,38 @@ export class View {
     }
 
     createDetailButtons = () => {
-        const buttonsContainer = document.createElement('div');
-        buttonsContainer.setAttribute('class', 'buttons');
+        const buttonsContainer = this.utils.render('div', {'class': 'buttons'})
         const buttons = ['Szczegóły', 'Historia', 'Przelew'];
         buttons.forEach(elem => {
-            let button = document.createElement('button');
-            button.textContent = elem;
+            let button = this.utils.render('button', {}, elem);
             buttonsContainer.appendChild(button);
         })
         return buttonsContainer;
     }
 
-    createCurrencySpan = () => {
-        const span = document.createElement('span');
-        span.setAttribute('class', 'currency');
-        span.textContent = " PLN";
-        return span;
-    }
-
     createAmountSpan = (data) => {
-        const span = document.createElement('span');
-        span.setAttribute('class', "amount");
-        if (data < 0) span.style.color = '#CB2C1D';
-        span.textContent = this.logic.convertCash(data);
-        span.appendChild(this.createCurrencySpan())
-        return span;
+        const amountSpan = this.utils.render('span', {'class': 'amount'}, this.utils.convertCash(data))
+        if (data < 0) amountSpan.style.color = '#CB2C1D';
+        amountSpan.appendChild(this.utils.render('span', {'class': 'currency'}, ' PLN'));
+        return amountSpan;
     }
 
     createFoundsSection = (data) => {
-        const availableFounds = document.createElement('div');
-        availableFounds.setAttribute('class', 'available-funds');
-        const foundsTitle = document.createElement('div');
-        foundsTitle.setAttribute('class', 'funds-title small');
-        foundsTitle.textContent = 'Dostępne środki';
-        const accountBalance = document.createElement('div');
-        accountBalance.setAttribute('class', 'account-balance');
+        const availableFounds = this.utils.render('div', {'class': 'available-funds'});
+        const foundsTitle = this.utils.render('div', {'class': 'funds-title small'}, 'Dostępne środki')
+        const accountBalance = this.utils.render('div', {'class': 'account-balance'}, this.utils.convertCash(data.availableFunds))
         if (data.availableFunds < 0) accountBalance.style.color = '#CB2C1D';
-        accountBalance.textContent = this.logic.convertCash(data.availableFunds);
+        if (data.specialHolder !== null) availableFounds.appendChild(this.createSpecialHolder(data));
         availableFounds.appendChild(foundsTitle);
-        if(data.specialHolder !== null) availableFounds.appendChild(this.createSpecialHolder(data));
         availableFounds.appendChild(accountBalance);
-        accountBalance.appendChild(this.createCurrencySpan());
+        accountBalance.appendChild(this.utils.render('span', {'class': 'currency'}, ' PLN'));
         return availableFounds;
     }
 
     createSpecialHolder = (data) => {
-        const specialHolder = document.createElement('div');
-        specialHolder.setAttribute('class', 'special-holder small');
-        specialHolder.textContent = `${data.specialHolder.title}: ${this.logic.convertCash(data.specialHolder.amount)}`;
-        specialHolder.appendChild(this.createCurrencySpan());
+        const specialHolder = this.utils.render('div', {'class': 'special-holder small'},
+            `${data.specialHolder.title}: ${this.utils.convertCash(data.specialHolder.amount)}`)
+        specialHolder.appendChild(this.utils.render('span', {'class': 'currency'}, ' PLN'));
         return specialHolder;
     }
 }
