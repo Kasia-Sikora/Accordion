@@ -32,5 +32,4 @@ export default class Utils {
         if(textContent !== undefined) newNode.textContent = textContent;
         return newNode;
     }
-
 }

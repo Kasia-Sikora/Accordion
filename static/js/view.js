@@ -24,7 +24,8 @@ export default class View {
                 'aria-expanded': 'false',
                 'class': 'Accordion-trigger',
                 'aria-controls': `section${this.count}`,
-                'id': `accordion${this.count}`
+                'id': `accordion${this.count}`,
+                'tabindex': "1"
             }
         )
         const bankName = this.utils.render('div', {'class': 'bank-name'}, data.bankName);
@@ -76,7 +77,7 @@ export default class View {
             'id': `section${this.count}`,
             'role': 'region',
             'aria-labelledby': `accordion${this.count}`,
-            'class': 'Accordion-panel'
+            'class': 'Accordion-panel',
         })
         section.appendChild(this.createDetails(data))
         section.appendChild(this.createDetailButtons());
@@ -102,7 +103,7 @@ export default class View {
         const buttonsContainer = this.utils.render('div', {'class': 'buttons'})
         const buttons = ['Szczegóły', 'Historia', 'Przelew'];
         buttons.forEach(elem => {
-            let button = this.utils.render('button', {}, elem);
+            let button = this.utils.render('button', {'tabindex': "1"}, elem);
             buttonsContainer.appendChild(button);
         })
         return buttonsContainer;
@@ -120,8 +121,8 @@ export default class View {
         const foundsTitle = this.utils.render('div', {'class': 'funds-title small'}, 'Dostępne środki')
         const accountBalance = this.utils.render('div', {'class': 'account-balance'}, this.utils.convertCash(data.availableFunds))
         if (data.availableFunds < 0) accountBalance.style.color = '#CB2C1D';
-        if (data.specialHolder !== null) availableFounds.appendChild(this.createSpecialHolder(data));
         availableFounds.appendChild(foundsTitle);
+        if (data.specialHolder !== null) availableFounds.appendChild(this.createSpecialHolder(data));
         availableFounds.appendChild(accountBalance);
         accountBalance.appendChild(this.utils.render('span', {'class': 'currency'}, ' PLN'));
         return availableFounds;
