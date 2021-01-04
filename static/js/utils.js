@@ -23,7 +23,7 @@ export default class Utils {
         return amount.join('');
     }
 
-    render(element, attributes, textContent) {
+    render = (element, attributes, textContent) => {
         const newNode = document.createElement(element);
         if (attributes !== {}) {
             for(const [key, value] of Object.entries(attributes))
@@ -32,5 +32,4 @@ export default class Utils {
         if(textContent !== undefined) newNode.textContent = textContent;
         return newNode;
     }
-
 }
